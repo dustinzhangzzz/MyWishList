@@ -1,7 +1,11 @@
 # MyWishList
 ## Authors: Jack Miller and Xiaoxuan Zhang
 ## App Link: https://still-garden-91097.herokuapp.com/login
-## Api Useage: Ebay api
+## Built With
+
+* [Flask](http://flask.palletsprojects.com/en/1.1.x/) - The web framework used
+* [EbaySdk](https://github.com/timotheus/ebaysdk-python) - Product Search API
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 Introduction: This project is a wish list. This project allows the user to search ebay for products adding them to a wishlist. Users can have multiple wish lists and other users can view their own wish list or their friend's wish lists by searching using their email.
 Pages description: 
 1.login: a landing page where the user logs in to their account register: a new user can create a new account 2.logout: user can logout of their account 3.index: landing page for users with two forms one for finding a submitted wishlist and one for creating a new wish list newlist: creates a new wish list search: uses ebay api to search for items adding them to products and displaying rename: allows user to rename the current wishlist add/delete: adds/delete a new product to the current wish list
