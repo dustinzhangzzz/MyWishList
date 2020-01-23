@@ -1,0 +1,174 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "base.html" %}
+{% block content %}
+<head>
+  {% block styles %}
+  {{ bootstrap.load_css() }}
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+    <button  onclick= "window.location.href = '{{ url_for('index') }}';" class="btn btn-secondary">Go back to index</button>
+<button  onclick= "window.location.href = '{{ url_for('logout') }}';" class="btn btn-danger">Logout</button>
+<br/>
+ <br/>
+<div class="container">
+  <div id="listTitle" class="input-group mb-3">
+        <input type="text" id="inputTitle" class="form-control" placeholder="Wishlist Title">
+        <div class="input-group-append">
+          <button id="titleSaver" onclick="saveTitle()" class="btn btn-outline-primary"> Save</button>
+        </div>
+  </div>
+<div>
+    <h3 id ="mytitle"></h3>
+    <button id="changetitle" onclick="changeTitle()" class="btn btn-outline-secondary">Change Title</button>
+</div>
+<br>
+<div id="listTitle" class="input-group mb-3">
+      <input type="text" id="searchBar" class="form-control" placeholder="Search">
+      <div class="input-group-append">
+        <button id="searchButton" onclick="search()" class="btn btn-outline-primary"> Go</button>
+      </div>
+</div>
+
+<div>
+    <ul id="wContainer" class="list-group"> </ul>
+</div>
+<div>
+<ul class="list-group" id = "search-result"></ul>
+</div>
+<div class="input-group" id = "comment">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Comment</span>
+  </div>
+  <textarea id="commentText" class="form-control" aria-label="Enter Comments(Limit 100)"></textarea>
+</div>
+
+<br/>
+<button id="finishButton" onclick = "summit()" class="btn btn-outline-success">Finish the wish List!</button>
+<div>
+    <ul id="display"></ul>
+</div>
+</div>
+{% block scripts %}
+{{ bootstrap.load_js() }}
+{% endblock %}
+<script>
+function saveTitle(){
+  var input = document.querySelector("#inputTitle");
+  var inputVal = input.value;
+  var mytitle = document.querySelector("#mytitle");
+  var saver = document.querySelector("#titleSaver")
+  mytitle.innerHTML = inputVal;
+  document.querySelector("#searchBar").style.display = "inline";
+  document.querySelector("#searchButton").style.display = "inline";
+  var changebutton = document.querySelector("#changetitle");
+  changebutton.style.display ="inline";
+  saver.style.display ="none";
+  input.style.display="none";
+  document.querySelector("#finishButton").style.display="inline";
+  document.querySelector("#comment").style.display = "inline"
+}
+function changeTitle(){
+  var input = document.querySelector("#inputTitle");
+  var saver = document.querySelector("#titleSaver")
+  var mytitle = document.querySelector("#mytitle");
+  mytitle.innerHTML = "";
+  input.style.display="inline";
+  saver.style.display="inline";
+  var changebutton = document.querySelector("#changetitle");
+  changebutton.style.display ="none";
+  document.querySelector("#finishButton").style.display="none";
+}
+
+</script>
+<script>
+async function search(){
+    document.querySelector("#display").innerHTML = "";
+    var i;
+    input = document.querySelector("#searchBar").value
+    console.log(input)
+    let rep  = await ebay(input);
+    console.log(rep[0])
+    for(i=0;i<10;i++){
+        res = rep[i];
+        el = document.createElement("li");
+        el.className = "list-group-item";
+        let name = res.title;
+        let category = res.primaryCategory.categoryName;
+        let id = res.itemId;
+        let png = res.galleryURL;
+        let url = res.viewItemURL;
+        let price = res.sellingStatus.currentPrice.value;
+        var img = document.createElement('img');
+        var a = document.createElement('a');
+        var linkText = document.createTextNode("View on Ebay");
+        a.href = res.viewItemURL;
+        a.appendChild(linkText);
+        a.title = "Link to this product";
+        img.src = png
+        el.innerHTML = name + ": $" + parseFloat(price).toFixed(2);
+        button = document.createElement("button");
+        button.onclick = function(){
+
+        var listContainer = document.querySelector("#wContainer");
+        var product = document.createElement("LI");
+        product.className = "list-group-item list-group-item-success";
+        product.innerHTML = name
+        var p = document.createElement("p")
+        p.innerHTML = id
+        p.style.display = "none"
+        var delButton = document.createElement("button");
+        delButton.className = "btn btn-danger";
+        delButton.innerHTML ="delete this product";
+        delButton.style.position = "absolute";
+        delButton.style.right = "0px";
+        delButton.addEventListener("click", function(){
+        var parent = this.parentElement;
+        parent.removeChild(this);
+        parent.removeChild(p)
+        }.bind(product));
+        product.appendChild(delButton);
+        listContainer.appendChild(product)
+        listContainer.appendChild(p)
+        }
+        button.className = "btn btn-success"
+        button.innerHTML = "Add to Wish List";
+        img.style.display = "block";
+        button.style.position = "absolute";
+        button.style.right = "0px";
+        el.appendChild(img);
+        el.appendChild(a);
+        el.appendChild(button);
+        document.querySelector("#display").appendChild(el);
+
+    }
+}
+async function summit(){
+    var container = document.querySelector("#wContainer")
+    var list = container.getElementsByTagName("p")
+    productlist = []
+    for (id of list){
+        productlist.push(id.innerHTML)
+    }
+    title = document.querySelector("#mytitle").innerHTML
+    comment = document.querySelector("#commentText").value
+    if (comment ==""){
+        comment = "No comment"
+    }
+    var myJSON = JSON.stringify(productlist)
+    await fetch("/add/"+myJSON+"/"+title+"/"+comment)
+    alert("You will be redericted to home page")
+    window.location.href = "{{ url_for('index') }}"
+
+
+}
+async function ebay(item){
+let init={
+    mode:"cors",
+    method:"GET",
+}
+    var res = await fetch("/search/"+item,init);
+    return res.json();
+}
+</script>
+{% endblock %}

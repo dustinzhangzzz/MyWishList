@@ -1,0 +1,24 @@
+#searchButton{
+    display:none;
+}
+#changetitle{
+    display:none;
+    padding: 6px 10px;
+}
+
+#addproduct{
+    display:none;
+}
+#searchBar{
+    display:none;
+}
+#finishButton{
+    display:none;
+}
+#comment{
+  display: none;
+}
+#commentText{
+  resize:none;
+  width:100%;
+}

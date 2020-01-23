@@ -1,0 +1,26 @@
+{% from 'bootstrap/form.html' import render_field %}
+
+<head>
+  {% block styles %}
+  {{ bootstrap.load_css() }}
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+{% block content %}
+<div class="container">
+<body>
+    <h1>Menu</h1>
+    <form action="/index" method="POST" class = 'form'>
+        {{ form1.hidden_tag() }}
+        {{ render_field(form1.myemail) }}
+        <br/>
+        {{ render_field(form1.find_list) }}
+
+    </form>
+    <h3>Or</h3>
+    <button onclick= "window.location.href = '{{ url_for('newlist') }}';" class="btn btn-secondary">Creat a new List!</button>
+    <button  onclick= "window.location.href = '{{ url_for('logout') }}';" class="btn btn-danger">Logout</button>
+
+  </body>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+<html>
+  <head>
+        <link rel="stylesheet" href="/static/styles.css">
+</head>
+  <body>
+    {% block navbar %}
+    <nav>
+      <h1>WishList</h1>
+    </nav>
+    {% endblock %}
+    {% block content %}
+    default content
+    {% endblock %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+        {%for message in messages %}
+            <li>{{message}}</li>
+        {%endfor%}
+        </ul>
+    {% endif %}
+    {% endwith %}
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+      {% block styles %}
+      {{ bootstrap.load_css() }}
+      {% endblock %}
+      <style>
+        .price {
+          position: absolute;
+          right: 0px;
+        }
+        .link {
+          display: block;
+        }
+        .comment {
+          border-style: double;
+          border-width: 5px;
+        }
+      </style>
+    </head>
+    <body>
+        <button  onclick= "window.location.href = '{{ url_for('index') }}';" class="btn btn-secondary">Go back to index</button>
+        <button  onclick= "window.location.href = '{{ url_for('logout') }}';" class="btn btn-danger">Logout</button>
+
+      <h2>{{user}}'s WishLists</h2>
+      <div class = "container">
+      {%for key in dictionary%}
+      <h3 class = "wishList">{{key.split(",")[0]}}</h3>
+      <h6>Created at: {{key.split(",")[1]}}</h6>
+      {%for items in dictionary[key]%}
+      <li class="list-group-item">
+      <p class = "name">{{items[1]}}</p>
+      <p class = "price">${{items[2]}}</p>
+      <p class = "link"><a href = {{items[4]}}>Visit on Ebay</a></p>
+      </li>
+      <br>
+      {% endfor %}
+      <h5 class = "comment">Comment: {{key.split(",")[2]}}</h5>
+
+
+      {%endfor%}
+      </div>
+      {% block scripts %}
+      {{ bootstrap.load_js() }}
+      {% endblock %}
+    </body>
+
+{% endblock %}
