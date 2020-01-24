@@ -10,7 +10,7 @@
 * [Flask](http://flask.palletsprojects.com/en/1.1.x/) - The web framework used
 * [EbaySDK](https://github.com/timotheus/ebaysdk-python) - Product Searching
 * [Heroku Postgres](https://devcenter.heroku.com/categories/heroku-postgres) - Datebase used
-* [Flask-Login] (https://flask-login.readthedocs.io/en/latest/) - User management
+* [Flask-Login](https://flask-login.readthedocs.io/en/latest/) - User management
 
 ## Deployment
 
