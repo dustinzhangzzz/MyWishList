@@ -4,7 +4,7 @@
 ## App Link: 
 * https://still-garden-91097.herokuapp.com/login
 ## Description
-* This app is a simple of shopping wish list. This app allows user to search ebay for products, add them to a wishlist. Users can have multiple wish lists and other users can view their own wish list or their friend's wish lists by searching their email.
+* This app is a simple shopping wish list. This app allows user to search ebay for products, add them to a wishlist. Users can have multiple wish lists and other users can view their own wish list or their friend's wish lists by searching their email.
 ## Built With
 
 * [Flask](http://flask.palletsprojects.com/en/1.1.x/) - The web framework used
